@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual de introducción · Suscripciones de IA compartidas</title>
+<style>
+  :root{
+    --tinta:#16233a;
+    --tinta-suave:#41506b;
+    --papel:#fbfaf7;
+    --papel-2:#f2efe9;
+    --linea:#ddd7cc;
+    --google:#2f6f5e;      --google-claro:#e6f0ec;
+    --openai:#6f3a86;      --openai-claro:#f0e8f4;
+    --claude:#b8601f;      --claude-claro:#fbeddf;
+    --aviso:#8a3324;       --aviso-claro:#f8e9e5;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--papel);color:var(--tinta);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    font-size:17px;line-height:1.62;
+  }
+  .envoltorio{max-width:980px;margin:0 auto;padding:0 22px 90px}
+
+  header.portada{background:var(--tinta);color:#f7f4ee;padding:56px 22px 46px;border-bottom:6px solid var(--claude)}
+  header.portada .envoltorio{padding-bottom:0}
+  .kicker{font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:.82rem;letter-spacing:.04em;color:#a9b6cc;margin:0 0 14px}
+  h1{font-size:clamp(2rem,4.4vw,3rem);line-height:1.12;margin:0 0 18px;font-weight:600;letter-spacing:-.01em}
+  .entradilla{max-width:62ch;color:#dbd6cc;margin:0}
+  .dos-sellos{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+  .sello{font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:.83rem;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22)}
+
+  nav.pestanas{position:sticky;top:0;z-index:20;background:var(--papel);border-bottom:1px solid var(--linea)}
+  nav.pestanas .envoltorio{padding-bottom:0;display:flex;gap:2px;overflow-x:auto}
+  nav.pestanas button{font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:.93rem;color:var(--tinta-suave);background:none;border:none;border-bottom:3px solid transparent;padding:16px 13px;cursor:pointer;white-space:nowrap}
+  nav.pestanas button:hover{color:var(--tinta)}
+  nav.pestanas button[aria-selected="true"]{color:var(--tinta);border-bottom-color:var(--claude);font-weight:600}
+  nav.pestanas button:focus-visible{outline:2px solid var(--tinta);outline-offset:-4px}
+
+  section[role="tabpanel"]{padding-top:44px}
+  section[hidden]{display:none}
+  h2{font-size:1.75rem;margin:0 0 6px;font-weight:600;letter-spacing:-.01em}
+  h2 + .sub{color:var(--tinta-suave);margin:0 0 30px;max-width:64ch}
+  h3{font-size:1.12rem;margin:0 0 10px;font-weight:600}
+  p{max-width:70ch}
+
+  .caja{background:#fff;border:1px solid var(--linea);padding:24px 26px;margin:0 0 18px;border-radius:3px}
+  .caja > :last-child{margin-bottom:0}
+  .etiqueta{display:inline-block;font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:.74rem;padding:3px 9px;border-radius:3px;margin-bottom:12px;background:var(--papel-2);color:var(--tinta-suave)}
+  .g{border-left:4px solid var(--google)}   .g .etiqueta{background:var(--google-claro);color:var(--google)}
+  .o{border-left:4px solid var(--openai)}   .o .etiqueta{background:var(--openai-claro);color:var(--openai)}
+  .c{border-left:4px solid var(--claude)}   .c .etiqueta{background:var(--claude-claro);color:var(--claude)}
+  .caja.aviso{background:var(--aviso-claro);border-color:#e5c9c2;border-left:4px solid var(--aviso)}
+  .caja.aviso h3{color:var(--aviso)}
+  .caja.aviso .etiqueta{background:#f0d5cd;color:var(--aviso)}
+
+  .rejilla{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(285px,1fr))}
+
+  .credencial{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:.95rem;background:var(--papel-2);border:1px dashed var(--linea);padding:3px 8px;border-radius:3px}
+  dl.datos{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 18px;align-items:baseline}
+  dl.datos dt{font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:.85rem;color:var(--tinta-suave)}
+  dl.datos dd{margin:0}
+
+  ol.pasos{counter-reset:p;list-style:none;padding:0;margin:0}
+  ol.pasos li{counter-increment:p;position:relative;padding-left:46px;margin-bottom:18px;max-width:68ch}
+  ol.pasos li::before{content:counter(p);position:absolute;left:0;top:1px;width:29px;height:29px;border-radius:50%;background:var(--tinta);color:#fff;font-family:ui-sans-serif,Arial,sans-serif;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  ul.limpia{padding-left:1.15em;margin:0}
+  ul.limpia li{margin-bottom:8px;max-width:66ch}
+
+  table{border-collapse:collapse;width:100%;font-size:.94rem;background:#fff}
+  th,td{border:1px solid var(--linea);padding:12px 14px;text-align:left;vertical-align:top}
+  thead th{background:var(--papel-2);font-family:ui-sans-serif,Arial,sans-serif;font-size:.86rem}
+  tbody th{font-weight:600;width:22%}
+  .desliza{overflow-x:auto}
+
+  a{color:var(--tinta);text-underline-offset:3px}
+  footer{border-top:1px solid var(--linea);margin-top:60px;padding-top:22px;color:var(--tinta-suave);font-size:.92rem}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="portada">
+  <div class="envoltorio">
+    <p class="kicker">Facultad de Medicina de Albacete · UCLM</p>
+    <h1>Tres suscripciones de IA<br>compartidas por el grupo</h1>
+    <p class="entradilla">Guía breve para empezar a usar Google AI Pro, la plataforma API de OpenAI y Claude Pro en la docencia. Qué es cada una, para qué sirve mejor, y cómo entrar la primera vez.</p>
+    <div class="dos-sellos">
+      <span class="sello">Cuenta común: iafacmedab@gmail.com</span>
+      <span class="sello">Coordina: Pedro Tranque</span>
+      <span class="sello">Revisado: septiembre de 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="pestanas">
+  <div class="envoltorio" role="tablist" aria-label="Secciones del manual">
+    <button role="tab" aria-selected="true"  aria-controls="p-inicio"  id="t-inicio">Empezar aquí</button>
+    <button role="tab" aria-selected="false" aria-controls="p-google"  id="t-google">Google AI Pro</button>
+    <button role="tab" aria-selected="false" aria-controls="p-openai"  id="t-openai">API de OpenAI</button>
+    <button role="tab" aria-selected="false" aria-controls="p-claude"  id="t-claude">Claude Pro</button>
+    <button role="tab" aria-selected="false" aria-controls="p-acceso"  id="t-acceso">Acceso</button>
+    <button role="tab" aria-selected="false" aria-controls="p-compara" id="t-compara">¿Cuál uso?</button>
+  </div>
+</nav>
+
+<main class="envoltorio">
+
+<!-- ============ EMPEZAR ============ -->
+<section role="tabpanel" id="p-inicio" aria-labelledby="t-inicio">
+  <h2>Qué tienes entre manos</h2>
+  <p class="sub">Tres accesos distintos, todos desde la misma cuenta de correo. No son intercambiables: dos son productos terminados y uno es materia prima para construir.</p>
+
+  <div class="rejilla">
+    <div class="caja g">
+      <span class="etiqueta">Suscripción 1 · producto</span>
+      <h3>Google AI Pro</h3>
+      <p>Herramientas ya montadas: Gemini, NotebookLM, AI Studio, Flow. Entras con el navegador y trabajas, sin programar nada.</p>
+      <p><strong>Su punto fuerte:</strong> trabajar con muchas fuentes a la vez y todo lo que vive dentro de Gmail, Drive y Docs.</p>
+    </div>
+    <div class="caja o">
+      <span class="etiqueta">Suscripción 2 · materia prima</span>
+      <h3>Plataforma API de OpenAI</h3>
+      <p>Una cuenta de desarrollador con facturación activada. Da acceso a los modelos de OpenAI desde el navegador o desde tus propios programas y automatizaciones.</p>
+      <p><strong>Su punto fuerte:</strong> repetir la misma tarea cientos de veces sin intervención humana.</p>
+    </div>
+    <div class="caja c">
+      <span class="etiqueta">Suscripción 3 · producto</span>
+      <h3>Claude Pro</h3>
+      <p>Asistente conversacional de Anthropic, con espacios de trabajo, generación de archivos y un modo agente que trabaja sobre las carpetas de tu ordenador.</p>
+      <p><strong>Su punto fuerte:</strong> documentos largos, generación de código y entregables en formatos variados.</p>
+    </div>
+  </div>
+
+  <div class="caja">
+    <h3>La metáfora del coche</h3>
+    <p>Las tres dan acceso a modelos avanzados. Los modelos son el motor. Gemini y Claude te lo entregan ya montado en un coche que puedes conducir hoy mismo. Con la API pagas solo el motor y lo montas tú en tus propios proyectos: más trabajo por delante, pero puedes construir el vehículo que necesitas.</p>
+  </div>
+
+  <div class="caja aviso">
+    <h3>Cuatro cosas que debes saber antes de entrar</h3>
+    <ul class="limpia">
+      <li><strong>Cuenta única compartida.</strong> Todo el grupo entra con el mismo usuario, así que tus conversaciones y tus archivos son visibles para los demás. Crea siempre tu propio proyecto o espacio de trabajo.</li>
+      <li><strong>Los límites de uso son comunes.</strong> No se multiplican por el número de personas: lo que consume uno se lo quita a los demás. Conviene repartir el trabajo pesado a lo largo del día.</li>
+      <li><strong>Datos sensibles, no.</strong> No subas datos identificables de pacientes ni de estudiantes. Anonimiza antes. Es una cuenta personal compartida, no un entorno institucional con garantías de tratamiento de datos.</li>
+      <li><strong>Avisa a Pedro antes de tu primer inicio de sesión.</strong> La verificación en dos pasos llega a su móvil y tiene que aprobarla en ese momento.</li>
+    </ul>
+  </div>
+
+  <div class="caja">
+    <span class="etiqueta">Quién paga qué</span>
+    <h3>Situación de los pagos</h3>
+    <div class="desliza">
+    <table>
+      <thead><tr><th>Suscripción</th><th>Importe</th><th>Forma de pago</th><th>Vigencia</th></tr></thead>
+      <tbody>
+        <tr><td>Google AI Pro</td><td>5,49 € el primer mes (tarifa promocional)</td><td>Tarjeta particular de Pedro</td><td>Hasta el 30 de septiembre</td></tr>
+        <tr><td>API de OpenAI</td><td>50 € de saldo inicial</td><td>Tarjeta particular de Pedro</td><td>Mientras quede saldo</td></tr>
+        <tr><td>Claude Pro</td><td>180 € por el año completo</td><td>Facturado a la Facultad de Medicina, con el NIF de la UCLM</td><td>10 abr. 2026 – 10 abr. 2027</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">La de Claude ya está facturada a nombre de la facultad, así que es la vía de financiación que conviene replicar con las otras dos si el grupo decide continuar.</p>
+  </div>
+</section>
+
+<!-- ============ GOOGLE ============ -->
+<section role="tabpanel" id="p-google" aria-labelledby="t-google" hidden>
+  <h2>Google AI Pro</h2>
+  <p class="sub">Suscripción de Google AI Pro, dentro de Google One, en una cuenta personal creada para uso compartido del grupo.</p>
+
+  <div class="caja g">
+    <span class="etiqueta">Qué incluye frente al plan gratuito</span>
+    <div class="rejilla" style="margin-top:6px">
+      <div>
+        <h3>Gemini</h3>
+        <p>Acceso ampliado a los modelos Pro, con ventana de contexto de hasta un millón de tokens. El plan gratuito se queda en los modelos Flash y en un número reducido de consultas a Pro.</p>
+        <h3>NotebookLM</h3>
+        <p>Hasta 300 fuentes por cuaderno, más resúmenes en audio, tarjetas e infografías, y acceso prioritario a novedades. Es la herramienta más directamente útil para docencia.</p>
+        <h3>Google AI Studio</h3>
+        <p>Cuotas ampliadas para prototipar y experimentar con los modelos Pro y con los de generación de imagen.</p>
+      </div>
+      <div>
+        <h3>Límites de uso</h3>
+        <p>Del orden de cuatro veces más uso en la app de Gemini que sin plan, y límites ampliados en AI Studio, NotebookLM y Flow.</p>
+        <h3>Desarrollo y código</h3>
+        <p>Gemini CLI y Gemini Code Assist, con límites mayores para agentes en entornos de programación.</p>
+        <h3>Creación e investigación</h3>
+        <p>Flow para generación de vídeo, Deep Research, y las funciones de Gemini integradas en Gmail, Docs y Vids.</p>
+        <h3>Extras</h3>
+        <p>5 TB de almacenamiento en la nube y YouTube Premium Lite, entre otros servicios incluidos.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rejilla">
+    <div class="caja g">
+      <span class="etiqueta">Precio</span>
+      <h3>Cuánto cuesta</h3>
+      <p>Nuestro acceso se contrató con una tarifa promocional de 5,49 € al mes. El <strong>precio estándar en España es de 21,99 € al mes</strong>, que es lo que se pagará al terminar la promoción. Hay un escalón intermedio, Google AI Plus, más barato pero con menos acceso a los modelos Pro y menos almacenamiento.</p>
+      <p>Google mantiene tarifas reducidas para estudiantes durante un periodo prolongado, pero eso exige verificar la condición de estudiante en cada cuenta: no se hereda de una cuenta compartida.</p>
+      <p>Si al grupo le interesa continuar, conviene pedir a la facultad que financie la suscripción anual, como ya se ha hecho con Claude Pro.</p>
+    </div>
+    <div class="caja g">
+      <span class="etiqueta">Gestión</span>
+      <h3>Cancelar o cambiar de plan</h3>
+      <p>Desde la cuenta de Google, en la sección de suscripciones y pagos de Google One. Ahí se cambia entre mensual y anual o se cancela. Atención a la fecha de renovación: al terminar la promoción el cargo sube de golpe.</p>
+      <h3>Plan B: uso compartido familiar</h3>
+      <p>Google AI Pro admite compartirse con hasta cinco personas adicionales, seis en total, cada una entrando con <strong>su propia cuenta de Google</strong>. Es más limpio que compartir contraseña, porque cada uno tiene sus archivos separados.</p>
+      <p>La contrapartida: los límites de uso no se multiplican por seis, se reparten. Si al grupo le interesa, se puede probar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPENAI ============ -->
+<section role="tabpanel" id="p-openai" aria-labelledby="t-openai" hidden>
+  <h2>Plataforma API de OpenAI</h2>
+  <p class="sub">Saldo inicial de 50 € compartido. No es una suscripción a ChatGPT Plus: aquí se paga solo por lo que se consume, medido en tokens, y no hay cuota mensual.</p>
+
+  <div class="caja o">
+    <span class="etiqueta">Para qué sirve</span>
+    <h3>Siete usos concretos</h3>
+    <ol class="pasos" style="margin-top:14px">
+      <li><strong>Experimentar con IA avanzada.</strong> Probar distintos modelos y configuraciones para ver cuál funciona mejor en tu caso, incluidos los multimodales que aceptan imagen y audio.</li>
+      <li><strong>Crear un chatbot personalizado</strong> para tu web, Moodle, Teams o WhatsApp Business, que responda con tu estilo, tus documentos y tus reglas.</li>
+      <li><strong>Analizar documentos y PDFs.</strong> Procesar informes, artículos o transcripciones largas y pedir resúmenes, extracción estructurada de datos o detección de errores.</li>
+      <li><strong>Generar contenido:</strong> borradores de correos, guiones, descripciones, traducciones y adaptaciones de tono, integrados en tus herramientas.</li>
+      <li><strong>Automatizar corrección y feedback</strong> de exámenes, prácticas o entrevistas: enviar preguntas y respuestas y recibir rúbricas, comentarios o puntuaciones.</li>
+      <li><strong>Clasificar y organizar información:</strong> etiquetar correos, encuestas o comentarios por tema, urgencia o sentimiento.</li>
+      <li><strong>Conectar con otras herramientas.</strong> Por ejemplo, que cada formulario recibido genere un resumen y se guarde en una hoja de cálculo.</li>
+    </ol>
+  </div>
+
+  <div class="caja aviso">
+    <span class="etiqueta">Coste</span>
+    <h3>Cómo se gasta el saldo común</h3>
+    <p>Se factura por tokens de entrada y de salida, y las tarifas varían mucho de un modelo a otro: entre los más económicos y los de razonamiento avanzado hay diferencias de más de un orden de magnitud. Un mismo trabajo puede costar céntimos o varios euros según el modelo que elijas.</p>
+    <ul class="limpia">
+      <li>Empieza siempre por un modelo pequeño y sube solo si el resultado no llega.</li>
+      <li>Antes de lanzar un lote de mil documentos, prueba con cinco y mira el gasto en la sección <em>Usage</em>.</li>
+      <li>Los precios y los nombres de modelo cambian cada pocos meses. Consulta el desplegable de la propia plataforma en vez de fiarte de una lista escrita, incluida esta.</li>
+    </ul>
+  </div>
+
+  <h3 style="margin:34px 0 14px;font-size:1.3rem">El panel, sección por sección</h3>
+  <p class="sub">Entra en <a href="https://platform.openai.com/home">platform.openai.com/home</a> con la cuenta compartida. Las funciones están en el menú izquierdo.</p>
+
+  <div class="rejilla">
+    <div class="caja o">
+      <span class="etiqueta">Organización y proyectos</span>
+      <h3>Tu espacio dentro de la cuenta común</h3>
+      <p>La organización es la suscripción compartida (iafacmedab). Dentro puedes crear tus propios proyectos desde el selector de la esquina superior izquierda, por ejemplo «proyecto 1 de Pedro».</p>
+      <ul class="limpia">
+        <li>Sigue siendo visible para los demás, pero es tu espacio propio.</li>
+        <li>Separa usos: «tesis», «docencia», «web».</li>
+        <li>Permite ver el gasto desglosado por proyecto, que es la forma práctica de saber quién está consumiendo el saldo.</li>
+        <li>Las claves de API se asocian a un proyecto concreto.</li>
+      </ul>
+    </div>
+
+    <div class="caja o">
+      <span class="etiqueta">Playground / Chat</span>
+      <h3>Probar modelos sin programar</h3>
+      <p>Funciona como un ChatGPT experimental dentro de la propia plataforma. Atención: aquí cada mensaje consume saldo, a diferencia de una suscripción de cuota fija.</p>
+      <ul class="limpia">
+        <li>Elige un modelo en el desplegable y escribe en el cuadro de chat.</li>
+        <li>Ajusta parámetros: temperatura, tokens máximos, instrucciones de sistema.</li>
+        <li>El botón <em>Code</em> muestra la llamada en Python o HTTP equivalente a lo que acabas de hacer a mano. Es la forma más rápida de pasar de la prueba al script.</li>
+      </ul>
+    </div>
+
+    <div class="caja o">
+      <span class="etiqueta">API keys</span>
+      <h3>Las claves que usas en tu código</h3>
+      <p>Son las contraseñas con las que tus programas llaman a los modelos. Quien tenga una, gasta del saldo común.</p>
+      <ol class="pasos" style="margin-top:12px">
+        <li>Pulsa <em>Create new secret key</em>.</li>
+        <li>Ponle un nombre descriptivo, como «mi-web» o «python-experimentos», y asígnala a tu proyecto.</li>
+        <li>Copia la clave y guárdala en lugar seguro: después no podrás verla completa.</li>
+        <li>Úsala en tu código como variable de entorno <span class="credencial">OPENAI_API_KEY</span>, nunca escrita dentro de un archivo que compartas o subas a un repositorio.</li>
+      </ol>
+      <p style="margin-top:14px"><strong>Consejo:</strong> una clave distinta por proyecto. Si una se compromete, borras solo esa.</p>
+    </div>
+
+    <div class="caja o">
+      <span class="etiqueta">Audio</span>
+      <h3>Hablar y escuchar</h3>
+      <p><strong>Texto a voz.</strong> Escribes un texto y recibes un audio leído por una voz a elegir. Sirve para narrar explicaciones y tutoriales, crear resúmenes en audio o dar voz a un asistente.</p>
+      <p><strong>Voz a texto.</strong> Subes un mp3, wav o webm y recibes la transcripción, con opción de subtítulos en formato .srt. Están disponibles Whisper y los modelos de transcripción más recientes. Útil para clases, conferencias, reuniones y entrevistas.</p>
+      <p><strong>En directo.</strong> Hay modelos que transcriben mientras hablas, con muy poca latencia, para asistentes de voz en tiempo real.</p>
+      <p><strong>Aviso.</strong> Transcribir voz de pacientes o de estudiantes identificables implica tratar datos personales: anonimiza antes de subir el audio, o trabaja solo con grabaciones consentidas para ese fin.</p>
+    </div>
+
+    <div class="caja o">
+      <span class="etiqueta">Images</span>
+      <h3>Ver y generar imágenes</h3>
+      <p><strong>Entender imágenes.</strong> Envías una imagen y pides que el modelo la describa, extraiga su texto o explique una gráfica o una diapositiva.</p>
+      <p><strong>Generar imágenes.</strong> Escribes una descripción y recibes una imagen. Los modelos actuales producen imágenes realistas y escriben texto legible dentro de la imagen. Sirve para ilustrar artículos y diapositivas, prototipar diseños y preparar material didáctico.</p>
+    </div>
+
+    <div class="caja o">
+      <span class="etiqueta">Codex</span>
+      <h3>Programación asistida</h3>
+      <p>Un asistente que trabaja sobre proyectos de código completos: escribe, modifica, prueba y explica. Se solapa bastante con Claude Code, así que elige uno de los dos y quédate ahí.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLAUDE ============ -->
+<section role="tabpanel" id="p-claude" aria-labelledby="t-claude" hidden>
+  <h2>Claude Pro</h2>
+  <p class="sub">Suscripción anual de Claude Pro, de Anthropic, contratada en abril de 2026 por 180 € para el año completo, hasta abril de 2027. Se accede en <a href="https://claude.ai/">claude.ai</a> con la misma cuenta compartida.</p>
+
+  <div class="caja c">
+    <span class="etiqueta">Qué aporta el plan Pro</span>
+    <h3>Frente al plan gratuito</h3>
+    <div class="rejilla" style="margin-top:6px">
+      <div>
+        <h3>Más uso y prioridad</h3>
+        <p>Al menos cinco veces el uso por sesión del plan gratuito, con acceso prioritario en los momentos de saturación.</p>
+        <h3>Selector de modelos</h3>
+        <p>Puedes elegir dentro de la familia de modelos: los ligeros para consultas rápidas, el intermedio para el trabajo diario y el más potente para tareas complejas. Acepta y devuelve muchos formatos de archivo.</p>
+        <h3>Proyectos ilimitados</h3>
+        <p>Espacios de trabajo con documentos de referencia que se reutilizan en todos los chats de ese proyecto.</p>
+      </div>
+      <div>
+        <h3>Documentos y análisis</h3>
+        <p>Redacción y análisis de textos largos en varios idiomas, y trabajo con volúmenes grandes de datos. Genera archivos de salida: texto, hojas de cálculo, imágenes, presentaciones y páginas web.</p>
+        <h3>Código</h3>
+        <p>Claude destaca en programación. Incluye Claude Code, que trabaja sobre repositorios completos, y permite crear páginas web a partir de la información que le des y exportarlas.</p>
+        <h3>Integraciones</h3>
+        <p>Complementos para Excel y PowerPoint, extensión de Chrome que lee las pestañas abiertas, y conexión con Figma para enviar diseños como archivos editables con capas.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rejilla">
+    <div class="caja c">
+      <span class="etiqueta">Modo Cowork</span>
+      <h3>Claude como agente en tu ordenador</h3>
+      <p>Si instalas la aplicación de escritorio, Claude puede trabajar sobre las carpetas de tu propio ordenador: evaluar archivos, redactar informes, hacer gráficas, rellenar formularios.</p>
+      <p>Es además la vía más privada de las tres suscripciones: <strong>esos archivos locales no son visibles para el resto del grupo</strong>, a diferencia de lo que subes al chat web. Para trabajo con material delicado, es la opción preferible.</p>
+    </div>
+
+    <div class="caja c">
+      <span class="etiqueta">Espacios personales</span>
+      <h3>Crea tu proyecto antes de nada</h3>
+      <p>Al ser un único usuario compartido, tus conversaciones son visibles para los demás si no las borras. Crea un proyecto propio desde el menú de la izquierda y trabaja dentro; podrás abrir múltiples chats separados y volver a ellos.</p>
+      <p>Los documentos que subas al proyecto quedan en caché: reutilizarlos en chats posteriores consume mucho menos que volver a subirlos cada vez. Es el truco más eficaz para no agotar el límite común.</p>
+    </div>
+  </div>
+
+  <div class="caja aviso">
+    <span class="etiqueta">Límites</span>
+    <h3>Cómo funciona el consumo, que es compartido</h3>
+    <p>Anthropic no publica un número fijo de mensajes. El límite tiene dos capas: una <strong>ventana móvil de cinco horas</strong>, que se reinicia cinco horas después de tu primer mensaje, y unos <strong>topes semanales</strong> que se reinician en un momento fijo asignado a la cuenta.</p>
+    <p>Como referencia de la propia documentación, en conversaciones cortas y con un modelo poco intensivo caben del orden de 45 mensajes cada cinco horas. Ese número baja mucho con conversaciones largas, archivos grandes, funciones como Research y modelos más potentes.</p>
+    <ul class="limpia">
+      <li><strong>Varias personas a la vez sí, pero el consumo se acumula entre todos.</strong> Si alguien lanza una tarea pesada, el resto se queda sin margen durante esa ventana.</li>
+      <li><strong>Elige el modelo según la tarea.</strong> Para consultas normales, el intermedio; reserva los más potentes para lo que de verdad lo necesite.</li>
+      <li><strong>Reparte el trabajo pesado</strong> a lo largo del día y de la semana, y avisa al grupo si vas a lanzar algo grande.</li>
+      <li>Puedes ver el consumo real en Configuración → Uso. Esa es la fuente fiable, no las estimaciones de terceros.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ACCESO ============ -->
+<section role="tabpanel" id="p-acceso" aria-labelledby="t-acceso" hidden>
+  <h2>Acceso</h2>
+  <p class="sub">El procedimiento es el mismo para las tres suscripciones: todas cuelgan de la misma cuenta de Google compartida.</p>
+
+  <div class="caja">
+    <h3>Quién tiene las credenciales</h3>
+    <p>Las claves de acceso se han compartido, por vía privada, entre los miembros del equipo de Teams <a href="https://teams.microsoft.com/l/team/19%3A5YodUoSfrAgfF9h11pOg4gzlUcgxGms0VfSnu4LpwP01%40thread.tacv2/conversations?groupId=23d18a21-56bb-4105-a194-db3eaec60f97&amp;tenantId=c42cbae6-61f4-498c-9107-6a8cf5f01e56">IA en MedicinaAb</a>. No aparecen en este manual.</p>
+    <p>Si te interesa formar parte de esta iniciativa para explorar las posibilidades de las distintas IA Pro en docencia, ponte en contacto con <strong>Pedro Tranque</strong> y te sumamos al equipo.</p>
+  </div>
+
+  <div class="caja">
+    <h3>Dónde se entra</h3>
+    <dl class="datos" style="margin-top:14px">
+      <dt>Google AI Pro</dt><dd>Cualquier servicio de Google: Gemini, NotebookLM o AI Studio</dd>
+      <dt>API de OpenAI</dt><dd><a href="https://platform.openai.com/home">platform.openai.com/home</a>, entrando con la opción de Google</dd>
+      <dt>Claude Pro</dt>   <dd><a href="https://claude.ai/">claude.ai</a>, entrando con la opción de Google</dd>
+    </dl>
+    <p style="margin-top:14px">Las tres cuelgan de la misma cuenta de Google, así que el procedimiento de entrada es idéntico.</p>
+  </div>
+
+  <div class="caja">
+    <h3>Pasos de la primera sesión</h3>
+    <ol class="pasos" style="margin-top:16px">
+      <li><strong>Avisa a Pedro por Teams justo antes de entrar.</strong> Al ser suscripciones personales, la validación en dos pasos llega a su teléfono o a su correo y tiene que aprobarla en ese momento. Solo ocurre la primera vez.</li>
+      <li><strong>Inicia sesión</strong> con el correo y la contraseña de arriba.</li>
+      <li><strong>Si aparece la pantalla de código de seguridad,</strong> marca <em>No volver a preguntar en este dispositivo</em>. Así los siguientes accesos no repetirán la comprobación.</li>
+      <li><strong>Elige «Usar otro método»</strong> y toca <em>Sí</em> en móvil o tablet. Eso envía la solicitud al teléfono de Pedro, que la aprueba.</li>
+      <li><strong>Ya dentro, crea tu espacio propio</strong> antes de empezar a trabajar: un proyecto en Claude y otro en la plataforma de OpenAI. Es lo que mantiene separado el trabajo de cada uno.</li>
+    </ol>
+  </div>
+
+  <div class="caja aviso">
+    <h3>Manejo de las credenciales</h3>
+    <p>La contraseña da acceso a las tres suscripciones y al saldo compartido de OpenAI, que se gasta por consumo: quien entra puede gastar dinero del grupo.</p>
+    <p>Por eso se pide el compromiso de no compartirla fuera del equipo de Teams. Si el acceso se hiciera público, alcanzaríamos enseguida los límites de uso o la cuenta sería bloqueada, y nos quedaríamos todos sin herramienta. Lo que sí podemos hacer es ampliar el equipo, o contratar nuevas suscripciones si la iniciativa resulta útil.</p>
+  </div>
+</section>
+
+<!-- ============ COMPARATIVA ============ -->
+<section role="tabpanel" id="p-compara" aria-labelledby="t-compara" hidden>
+  <h2>¿Cuál uso para qué?</h2>
+  <p class="sub">Las tres se solapan en buena parte. Esta tabla resume dónde encaja mejor cada una para el trabajo docente.</p>
+
+  <div class="desliza">
+  <table>
+    <thead>
+      <tr><th></th><th>Google AI Pro</th><th>API de OpenAI</th><th>Claude Pro</th></tr>
+    </thead>
+    <tbody>
+      <tr><th>Qué es</th>
+        <td>Suscripción de producto: herramientas ya construidas.</td>
+        <td>Cuenta de desarrollador: acceso al modelo en bruto.</td>
+        <td>Suscripción de producto, con modo agente sobre tu ordenador.</td></tr>
+      <tr><th>Cómo se paga</th>
+        <td>Cuota fija mensual.</td>
+        <td>Por consumo, sobre el saldo común. Sin cuota.</td>
+        <td>Anual, ya pagada hasta abril de 2027.</td></tr>
+      <tr><th>Hace falta programar</th>
+        <td>No.</td>
+        <td>No para probar en el navegador; sí para integrarlo.</td>
+        <td>No.</td></tr>
+      <tr><th>Preparar una clase</th>
+        <td>Su terreno: NotebookLM, con hasta 300 fuentes.</td>
+        <td>Da más vueltas de las necesarias.</td>
+        <td>Muy bueno con documentos largos y material propio en proyectos.</td></tr>
+      <tr><th>Transcribir clases o entrevistas</th>
+        <td>Funciones de audio dentro de las apps.</td>
+        <td>Su terreno para lotes: Whisper, con subtítulos y modo en directo.</td>
+        <td>No es su fuerte; trabaja mejor sobre la transcripción ya hecha.</td></tr>
+      <tr><th>Corregir muchos exámenes igual</th>
+        <td>Manual, caso a caso.</td>
+        <td>Su terreno: rúbricas y puntuaciones a escala, sin intervención.</td>
+        <td>Bien para pocos casos, o para diseñar la rúbrica.</td></tr>
+      <tr><th>Generar imágenes o vídeo</th>
+        <td>Flow para vídeo; generación de imagen incluida.</td>
+        <td>Generación de imagen por API.</td>
+        <td>No genera imágenes; sí gráficos y diagramas.</td></tr>
+      <tr><th>Entregables en Word, Excel o web</th>
+        <td>Dentro del ecosistema Google.</td>
+        <td>Lo que tú programes.</td>
+        <td>Su terreno: genera archivos en muchos formatos.</td></tr>
+      <tr><th>Programar</th>
+        <td>Gemini CLI y Code Assist.</td>
+        <td>Codex y llamadas directas.</td>
+        <td>Claude Code, sobre repositorios completos.</td></tr>
+      <tr><th>Material delicado</th>
+        <td>Cuenta compartida: visible para el grupo.</td>
+        <td>Cuenta compartida: visible para el grupo.</td>
+        <td>Modo Cowork trabaja en local, sin exponer tus carpetas.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="rejilla" style="margin-top:22px">
+    <div class="caja">
+      <h3>Por dónde empezar si no has tocado ninguna</h3>
+      <p>Entra primero en NotebookLM, dentro de Google AI Pro, y carga tres o cuatro artículos tuyos. Es la vía más rápida para ver un resultado útil sin curva de aprendizaje.</p>
+      <p>El segundo paso natural es Claude Pro, para redactar y producir materiales: el año ya está pagado, así que no hay riesgo de gasto.</p>
+      <p>La API llega cuando tengas una tarea repetitiva y bien definida: transcribir treinta audios, corregir cien respuestas con la misma rúbrica. Antes de eso, es esfuerzo sin retorno.</p>
+    </div>
+    <div class="caja">
+      <h3>Reglas de convivencia del grupo</h3>
+      <ul class="limpia">
+        <li>Crea tu proyecto antes de empezar, en las tres plataformas.</li>
+        <li>No borres los chats ni los proyectos de otros.</li>
+        <li>Avisa por el canal del grupo si vas a lanzar una tarea larga que consuma límites.</li>
+        <li>Anonimiza siempre el material de pacientes y de estudiantes.</li>
+        <li>Si vas a gastar saldo de OpenAI en un lote grande, coméntalo antes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="envoltorio">
+  <p>Documento interno del grupo. Elaborado a partir de las notas de Pedro Tranque y de la factura de Claude Pro de abril de 2026, contrastado con las páginas oficiales de cada proveedor en septiembre de 2026.</p>
+  <p>Precios, límites de uso y nombres de modelo cambian cada pocos meses en las tres plataformas. Antes de renovar o de planificar un gasto, comprueba las condiciones vigentes en la propia plataforma: la sección de uso de cada cuenta es siempre más fiable que este documento.</p>
+</footer>
+
+<script>
+  const botones = document.querySelectorAll('nav.pestanas button');
+  const paneles = document.querySelectorAll('section[role="tabpanel"]');
+  botones.forEach(b => b.addEventListener('click', () => {
+    botones.forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    paneles.forEach(p => p.hidden = (p.id !== b.getAttribute('aria-controls')));
+    window.scrollTo({top: 0, behavior: 'auto'});
+  }));
+</script>
+</body>
+</html>
